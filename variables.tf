@@ -8,11 +8,6 @@ variable "private_subnet_ids" {
 #   type        = any
 # }
 
-variable "bastion_host_SG_id" {
-  description = "Please enter the ID of the security group of the bastion host"
-  type        = string
-}
-
 variable "vpc_id" {
   description = "Please enter the ID of the VPC"
   type        = string

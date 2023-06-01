@@ -79,24 +79,6 @@ module "eks" {
     #   cidr_blocks      = ["0.0.0.0/0"]
     #   ipv6_cidr_blocks = ["::/0"]
     # }
-    # ## Enable access from bastion host to Nodes
-    # ingress_bastion = {
-    #   description       = "Allow access from Bastion Host"
-    #   type              = "ingress"
-    #   from_port         = 443
-    #   to_port           = 443
-    #   protocol          = "tcp"
-    #   source_security_group_id = var.bastion_host_SG_id
-    # }
-    # ## Enable RDP access from bastion host to Nodes
-    # ingress_bastion_win = {
-    #   description       = "Allow access from Bastion Host via RDP"
-    #   type              = "ingress"
-    #   from_port         = 3389
-    #   to_port           = 3389
-    #   protocol          = "tcp"
-    #   source_security_group_id = var.bastion_host_SG_id
-    # }
 
     #     ## Security Group for Metrics Server
     # ingress_cluster_metricserver = {
@@ -109,17 +91,7 @@ module "eks" {
     # }
     # #https://github.com/kubernetes-sigs/metrics-server/issues/448
   }
-## Enable access from bastion host to EKS endpoint
-  # cluster_security_group_additional_rules = {
-  #   ingress_bastion = {
-  #     description       = "Allow access from Bastion Host"
-  #     type              = "ingress"
-  #     from_port         = 443
-  #     to_port           = 443
-  #     protocol          = "tcp"
-  #     source_security_group_id = var.bastion_host_SG_id
-  #   }
-  # }
+
   self_managed_node_groups = {
     linux = {
       platform = "linux"
