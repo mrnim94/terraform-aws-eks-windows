@@ -129,7 +129,7 @@ locals {
     kind            = "Config"
     current-context = "terraform"
     clusters = [{
-      name = module.eks.cluster_id
+      name = module.eks.cluster_name
       cluster = {
         certificate-authority-data = module.eks.cluster_certificate_authority_data
         server                     = module.eks.cluster_endpoint
@@ -138,7 +138,7 @@ locals {
     contexts = [{
       name = "terraform"
       context = {
-        cluster = module.eks.cluster_id
+        cluster = module.eks.cluster_name
         user    = "terraform"
       }
     }]
