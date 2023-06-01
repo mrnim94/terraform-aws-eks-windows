@@ -38,7 +38,7 @@ resource "aws_kms_key" "eks" {
 
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
-  version = "~> 19.0"
+  version = "~> 19.15"
   vpc_id = var.vpc_id
   cluster_name = var.eks_cluster_name
   subnet_ids = var.private_subnet_ids
