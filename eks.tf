@@ -108,7 +108,7 @@ module "eks" {
       #####################
       bootstrap_extra_args = chomp(
       <<-EOT
-      --kubelet-extra-args '--max-pods=50 --node-labels=apps=true'
+      --kubelet-extra-args '--max-pods=110 --node-labels=apps=true'
       EOT
       )
     }
