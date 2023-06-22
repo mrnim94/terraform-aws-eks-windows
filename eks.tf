@@ -127,7 +127,8 @@ module "eks" {
 
   cluster_addons = {
     vpc-cni = {
-      before_compute = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
       configuration_values = jsonencode({
         env = {
           # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
