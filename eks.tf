@@ -103,6 +103,14 @@ module "eks" {
       max_size = var.lin_max_size
       min_size = var.lin_min_size
       ami_id = data.aws_ami.lin_ami.id
+      #####################
+      #### BOOTSTRAPING ###
+      #####################
+      bootstrap_extra_args = chomp(
+      <<-EOT
+      --kubelet-extra-args '--max-pods=50 --node-labels=apps=true'
+      EOT
+      )
     }
     windows = {
       platform = "windows"
@@ -114,6 +122,19 @@ module "eks" {
       max_size = var.win_max_size
       min_size = var.win_min_size
       ami_id = data.aws_ami.win_ami.id
+    }
+  }
+
+  cluster_addons = {
+    vpc-cni = {
+      resolve_conflicts = "OVERWRITE"
+      configuration_values = jsonencode({
+        env = {
+          # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
+          ENABLE_PREFIX_DELEGATION = "true"
+          WARM_PREFIX_TARGET       = "1"
+        }
+      })
     }
   }
 }
@@ -170,5 +191,25 @@ resource "null_resource" "apply" {
       KUBECONFIG = self.triggers.kubeconfig
     }
     command = self.triggers.cmd_patch
+  }
+}
+
+module "vpc_cni_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name_prefix      = "${var.eks_cluster_name}-vpc-cni"
+  attach_vpc_cni_policy = true
+  vpc_cni_enable_ipv4   = true
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:aws-node"]
+    }
+  }
+
+  tags = {
+    Name = "${var.eks_cluster_name}"
   }
 }
