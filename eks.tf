@@ -122,6 +122,14 @@ module "eks" {
       max_size = var.win_max_size
       min_size = var.win_min_size
       ami_id = data.aws_ami.win_ami.id
+      #####################
+      #### BOOTSTRAPING ###
+      #####################
+      bootstrap_extra_args = chomp(
+      <<-EOT
+      --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=apps=true'
+      EOT
+      )
     }
   }
 
