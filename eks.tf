@@ -133,7 +133,6 @@ module "eks" {
           ENABLE_PREFIX_DELEGATION = "true"
           WARM_PREFIX_TARGET       = "1"
           WARM_IP_TARGET           = "5"
-          MINIMUM_IP_TARGET        = "2"
         }
       })
     }
