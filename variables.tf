@@ -60,3 +60,10 @@ variable "node_host_key_name" {
   description = "Please enter the name of the SSH key pair that should be assigned to the worker nodes of the cluster"
   type        = string
 }
+
+
+variable "max_ips_per_node" {
+  description = "Calculate the number of maximum pods per node, https://nimtechnology.com/2023/06/23/eks-ips-increase-most-many-ips-as-possible-on-each-node-of-your-eks/#2221_Adjust_kubelet"
+  type        = string
+  default = "110"
+}

@@ -108,7 +108,7 @@ module "eks" {
       #####################
       bootstrap_extra_args = chomp(
       <<-EOT
-      --kubelet-extra-args '--max-pods=110 --node-labels=apps=true'
+      --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=apps=true'
       EOT
       )
     }
@@ -132,6 +132,8 @@ module "eks" {
           # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
           ENABLE_PREFIX_DELEGATION = "true"
           WARM_PREFIX_TARGET       = "1"
+          WARM_IP_TARGET           = "5"
+          MINIMUM_IP_TARGET        = "2"
         }
       })
     }
