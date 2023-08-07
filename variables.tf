@@ -67,3 +67,54 @@ variable "max_ips_per_node" {
   type        = string
   default = "110"
 }
+
+##### Extra node
+################
+
+variable "extra_node_group" {
+  description = "When you want to create a extra node group for the special purpose"
+  type    = bool
+  default = false  # Set to true to enable the extra_node_group, or false to disable it
+}
+
+variable "extra_instance_type" {
+  description = "Please enter the instance type to be used for the extra Linux worker nodes"
+  type        = string
+}
+variable "extra_min_size" {
+  description = "Please enter the minimal size for the extra Linux ASG"
+  type        = string
+}
+variable "extra_max_size" {
+  description = "Please enter the maximal size for the extra Linux ASG"
+  type        = string
+}
+variable "extra_desired_size" {
+  description = "Please enter the desired size for the extra Linux ASG"
+  type        = string
+}
+
+variable "extra_node_group_taints" {
+  type    = list(map(string))
+  default = []
+}
+
+variable "extra_node_group_labels" {
+  type    = map(string)
+  default = {}
+}
+
+# # In your Terraform variables file (e.g., terraform.tfvars)
+# extra_node_group_taints = [
+#   {
+#     key    = "node-role"
+#     value  = "extra"
+#     effect = "NoSchedule"
+#   }
+# ]
+
+# extra_node_group_labels = {
+#   "node-type" = "extra-node"
+#   "env"       = "development"
+# }
+

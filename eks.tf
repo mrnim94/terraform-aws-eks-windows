@@ -131,6 +131,27 @@ module "eks" {
       EOT
       )
     }
+
+    extra = {
+      count = var.extra_node_group ? 1 : 0
+      platform = "linux"
+      name = "extra"
+      public_ip    = false
+      instance_type = var.extra_instance_type
+      key_name = var.node_host_key_name
+      desired_size = var.extra_desired_size
+      max_size = var.extra_max_size
+      min_size = var.extra_min_size
+      ami_id = data.aws_ami.lin_ami.id
+      bootstrap_extra_args = chomp(
+        <<-EOT
+        --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=apps=true'
+        EOT
+      )
+
+      taints = var.extra_node_group_taints
+      labels = var.extra_node_group_labels
+    }
   }
 
   cluster_addons = {
