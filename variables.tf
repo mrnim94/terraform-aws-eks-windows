@@ -67,3 +67,41 @@ variable "max_ips_per_node" {
   type        = string
   default = "110"
 }
+
+##### Extra node
+################
+
+variable "extra_node_group" {
+  description = "When you want to create a extra node group for the special purpose"
+  type    = bool
+  default = false  # Set to true to enable the extra_node_group, or false to disable it
+}
+
+variable "extra_instance_type" {
+  description = "Please enter the instance type to be used for the extra Linux worker nodes"
+  type        = string
+}
+variable "extra_min_size" {
+  description = "Please enter the minimal size for the extra Linux ASG"
+  type        = string
+}
+variable "extra_max_size" {
+  description = "Please enter the maximal size for the extra Linux ASG"
+  type        = string
+}
+variable "extra_desired_size" {
+  description = "Please enter the desired size for the extra Linux ASG"
+  type        = string
+}
+variable "node_labels" {
+  description = "Node labels for the EKS nodes. Exp: `node_labels = key1=value1,key2=value2`"
+  type        = string
+  default     = ""
+}
+
+variable "node_taints" {
+  description = "Taints for the EKS nodes, Exp: `node_taints = test=true:NoSchedule`"
+  type        = string
+  default     = ""
+}
+
