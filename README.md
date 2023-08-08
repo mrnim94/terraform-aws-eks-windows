@@ -151,7 +151,7 @@ module "eks-windows" {
   extra_max_size = 1
   extra_min_size = 1
   extra_instance_type = "m5.2xlarge"
-	node_taints = "test=true:NoSchedule"
-	node_labels = "key1=value1,key2=value2"
+  node_taints = "test=true:NoSchedule"
+  node_labels = "key1=value1,key2=value2"
 }
 ```
