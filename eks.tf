@@ -143,26 +143,11 @@ module "eks" {
       max_size = var.extra_max_size
       min_size = var.extra_min_size
       ami_id = data.aws_ami.lin_ami.id
-      # bootstrap_extra_args = chomp(
-      #   <<-EOT
-      #   --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=${var.node_labels} --register-with-taints=${var.node_taints}'
-      #   EOT
-      # )
-
-      k8s_taints = [
-        {
-          key    = "node-role"
-          value  = "extra"
-          effect = "NoSchedule"
-        }
-      ]
-
-      # Node Labels can be applied through EKS API or through Bootstrap script using kubelet_extra_args
-      k8s_labels = {
-        Environment = "preprod"
-        Zone        = "dev"
-        Runtime     = "containerd"
-      }
+      bootstrap_extra_args = chomp(
+        <<-EOT
+        --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=${var.node_labels} --register-with-taints=${var.node_taints}'
+        EOT
+      )
     }
   }
 
