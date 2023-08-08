@@ -80,18 +80,22 @@ variable "extra_node_group" {
 variable "extra_instance_type" {
   description = "Please enter the instance type to be used for the extra Linux worker nodes"
   type        = string
+  default = "t3.xlarge"
 }
 variable "extra_min_size" {
   description = "Please enter the minimal size for the extra Linux ASG"
   type        = string
+  default = "1"
 }
 variable "extra_max_size" {
   description = "Please enter the maximal size for the extra Linux ASG"
   type        = string
+  default = "1"
 }
 variable "extra_desired_size" {
   description = "Please enter the desired size for the extra Linux ASG"
   type        = string
+  default = "1"
 }
 variable "node_labels" {
   description = "Node labels for the EKS nodes. Exp: `node_labels = key1=value1,key2=value2`"
