@@ -92,7 +92,7 @@ variable "extra_max_size" {
 variable "extra_desired_size" {
   description = "Please enter the desired size for the extra Linux ASG"
   type        = string
-# }
+}
 # variable "node_labels" {
 #   description = "Node labels for the EKS nodes"
 #   type        = string
