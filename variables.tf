@@ -93,28 +93,15 @@ variable "extra_desired_size" {
   description = "Please enter the desired size for the extra Linux ASG"
   type        = string
 }
-
-variable "extra_node_group_taints" {
-  type    = list(map(string))
-  default = []
+variable "node_labels" {
+  description = "Node labels for the EKS nodes"
+  type        = string
+  default     = "apps=true"
 }
 
-variable "extra_node_group_labels" {
-  type    = map(string)
-  default = {}
+variable "register_with_taints" {
+  description = "Taints for the EKS nodes"
+  type        = string
+  default     = ""
 }
-
-# # In your Terraform variables file (e.g., terraform.tfvars)
-# extra_node_group_taints = [
-#   {
-#     key    = "node-role"
-#     value  = "extra"
-#     effect = "NoSchedule"
-#   }
-# ]
-
-# extra_node_group_labels = {
-#   "node-type" = "extra-node"
-#   "env"       = "development"
-# }
 
