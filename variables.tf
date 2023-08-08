@@ -96,10 +96,12 @@ variable "extra_desired_size" {
 variable "node_labels" {
   description = "Node labels for the EKS nodes. Exp: `node_labels = key1=value1,key2=value2`"
   type        = string
+  default     = ""
 }
 
 variable "node_taints" {
   description = "Taints for the EKS nodes, Exp: `node_taints = test=true:NoSchedule`"
   type        = string
+  default     = ""
 }
 
