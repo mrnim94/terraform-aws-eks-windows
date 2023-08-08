@@ -129,3 +129,29 @@ module "eks-windows" {
     node_host_key_name = "eks-terraform-key"
 }
 ```
+
+## Extra node for special cases   
+
+Arcording Issuse: https://github.com/mrnim94/terraform-aws-eks-windows/issues/11   
+Suppose you create the individual node group for a particular purpose such as "storage, mesh controller" and don't want them to affect the product application. In that case, you will need to configure the extra node group.   
+
+
+```hcl
+####...
+
+module "eks-windows" {
+  source  = "mrnim94/eks-windows/aws"
+  version = "2.0.0"
+  ####....
+  ######....
+  
+  ### For extra Node Group
+  extra_node_group = true
+  extra_desired_size = 1
+  extra_max_size = 1
+  extra_min_size = 1
+  extra_instance_type = "m5.2xlarge"
+	node_taints = "test=true:NoSchedule"
+	node_labels = "key1=value1,key2=value2"
+}
+```
