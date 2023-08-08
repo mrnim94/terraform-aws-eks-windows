@@ -148,20 +148,6 @@ module "eks" {
         --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=apps=true --register-with-taints='
         EOT
       )
-
-      labels = {
-        Environment = "test"
-        GithubRepo  = "terraform-aws-eks"
-        GithubOrg   = "terraform-aws-modules"
-      }
-
-      taints = {
-        dedicated = {
-          key    = "dedicated"
-          value  = "gpuGroup"
-          effect = "NO_SCHEDULE"
-        }
-      }
     }
   }
 
