@@ -149,8 +149,19 @@ module "eks" {
         EOT
       )
 
-      taints = var.extra_node_group_taints
-      labels = var.extra_node_group_labels
+      labels = {
+        Environment = "test"
+        GithubRepo  = "terraform-aws-eks"
+        GithubOrg   = "terraform-aws-modules"
+      }
+
+      taints = {
+        dedicated = {
+          key    = "dedicated"
+          value  = "gpuGroup"
+          effect = "NO_SCHEDULE"
+        }
+      }
     }
   }
 
