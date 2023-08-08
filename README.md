@@ -111,7 +111,7 @@ output "out_private_subnets" {
 
 module "eks-windows" {
     source  = "mrnim94/eks-windows/aws"
-    version = "1.1.4"
+    version = "2.0.0"
     region = var.region
     eks_cluster_name = local.cluster_name
     eks_cluster_version = "1.24"
@@ -144,7 +144,7 @@ module "eks-windows" {
   version = "2.0.0"
   ####....
   ######....
-  
+
   ### For extra Node Group
   extra_node_group = true
   extra_desired_size = 1
