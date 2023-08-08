@@ -145,7 +145,7 @@ module "eks" {
       ami_id = data.aws_ami.lin_ami.id
       bootstrap_extra_args = chomp(
         <<-EOT
-        --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=apps=true'
+        --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=apps=true --register-with-taints=test=true:NoSchedule'
         EOT
       )
 
