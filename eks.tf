@@ -92,7 +92,8 @@ module "eks" {
     # #https://github.com/kubernetes-sigs/metrics-server/issues/448
   }
 
-  self_managed_node_groups = {
+  self_managed_node_groups = merge(
+  {
     linux = {
       platform = "linux"
       name = "linux"
@@ -131,7 +132,9 @@ module "eks" {
       EOT
       )
     }
+  },
 
+  var.extra_node_group ? {
     extra = {
       count = var.extra_node_group ? 1 : 0
       platform = "linux"
@@ -149,7 +152,9 @@ module "eks" {
         EOT
       )
     }
-  }
+  } : {}
+  
+  ) ## end merge function 
 
   cluster_addons = {
     vpc-cni = {
