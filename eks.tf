@@ -92,64 +92,68 @@ module "eks" {
     # #https://github.com/kubernetes-sigs/metrics-server/issues/448
   }
 
-  self_managed_node_groups = {
-    linux = {
-      platform = "linux"
-      name = "linux"
-      public_ip    = false
-      instance_type = var.lin_instance_type
-      key_name = var.node_host_key_name
-      desired_size = var.lin_desired_size
-      max_size = var.lin_max_size
-      min_size = var.lin_min_size
-      ami_id = data.aws_ami.lin_ami.id
-      #####################
-      #### BOOTSTRAPING ###
-      #####################
-      bootstrap_extra_args = chomp(
-      <<-EOT
-      --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=apps=true'
-      EOT
-      )
-    }
-    windows = {
-      platform = "windows"
-      name = "windows"
-      public_ip    = false
-      instance_type = var.win_instance_type
-      key_name = var.node_host_key_name
-      desired_size = var.win_desired_size
-      max_size = var.win_max_size
-      min_size = var.win_min_size
-      ami_id = data.aws_ami.win_ami.id
-      #####################
-      #### BOOTSTRAPING ###
-      #####################
-      bootstrap_extra_args = chomp(
-      <<-EOT
-      -KubeletExtraArgs '--max-pods=${var.max_ips_per_node} --node-labels=apps=true'
-      EOT
-      )
-    }
-
-    extra = {
-      count = var.extra_node_group ? 1 : 0
-      platform = "linux"
-      name = "extra"
-      public_ip    = false
-      instance_type = var.extra_instance_type
-      key_name = var.node_host_key_name
-      desired_size = var.extra_desired_size
-      max_size = var.extra_max_size
-      min_size = var.extra_min_size
-      ami_id = data.aws_ami.lin_ami.id
-      bootstrap_extra_args = chomp(
+  self_managed_node_groups = merge(
+    {
+      linux = {
+        platform = "linux"
+        name = "linux"
+        public_ip    = false
+        instance_type = var.lin_instance_type
+        key_name = var.node_host_key_name
+        desired_size = var.lin_desired_size
+        max_size = var.lin_max_size
+        min_size = var.lin_min_size
+        ami_id = data.aws_ami.lin_ami.id
+        #####################
+        #### BOOTSTRAPING ###
+        #####################
+        bootstrap_extra_args = chomp(
         <<-EOT
-        --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=${var.node_labels} --register-with-taints=${var.node_taints}'
+        --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=apps=true'
         EOT
-      )
-    }
-  }
+        )
+      }
+      windows = {
+        platform = "windows"
+        name = "windows"
+        public_ip    = false
+        instance_type = var.win_instance_type
+        key_name = var.node_host_key_name
+        desired_size = var.win_desired_size
+        max_size = var.win_max_size
+        min_size = var.win_min_size
+        ami_id = data.aws_ami.win_ami.id
+        #####################
+        #### BOOTSTRAPING ###
+        #####################
+        bootstrap_extra_args = chomp(
+        <<-EOT
+        -KubeletExtraArgs '--max-pods=${var.max_ips_per_node} --node-labels=apps=true'
+        EOT
+        )
+      }
+    },
+
+    var.extra_node_group ? {
+      extra = {
+        count = var.extra_node_group ? 1 : 0
+        platform = "linux"
+        name = "extra"
+        public_ip    = false
+        instance_type = var.extra_instance_type
+        key_name = var.node_host_key_name
+        desired_size = var.extra_desired_size
+        max_size = var.extra_max_size
+        min_size = var.extra_min_size
+        ami_id = data.aws_ami.lin_ami.id
+        bootstrap_extra_args = chomp(
+          <<-EOT
+          --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=${var.node_labels} --register-with-taints=${var.node_taints}'
+          EOT
+        )
+      }
+    } : {}
+  ) ## end merge function 
 
   cluster_addons = {
     vpc-cni = {
