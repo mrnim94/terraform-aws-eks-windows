@@ -120,6 +120,22 @@ module "eks" {
         --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=apps=true'
         EOT
         )
+
+
+        ebs_optimized     = true
+        block_device_mappings = {
+          xvda = {
+            device_name = "/dev/xvda"
+            ebs = {
+              volume_size           = 100
+              volume_type           = "gp3"
+              iops                  = 3000
+              throughput            = 125
+              encrypted             = true
+              delete_on_termination = true
+            }
+          }
+        }
       }
       windows = {
         platform = "windows"
@@ -139,6 +155,21 @@ module "eks" {
         -KubeletExtraArgs '--max-pods=${var.max_ips_per_node} --node-labels=apps=true'
         EOT
         )
+
+        ebs_optimized     = true
+        block_device_mappings = {
+          xvda = {
+            device_name = "/dev/xvda"
+            ebs = {
+              volume_size           = 100
+              volume_type           = "gp3"
+              iops                  = 3000
+              throughput            = 125
+              encrypted             = true
+              delete_on_termination = true
+            }
+          }
+        }
       }
     },
 
@@ -159,6 +190,21 @@ module "eks" {
           --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=${var.node_labels} --register-with-taints=${var.node_taints}'
           EOT
         )
+
+        ebs_optimized     = true
+        block_device_mappings = {
+          xvda = {
+            device_name = "/dev/xvda"
+            ebs = {
+              volume_size           = 100
+              volume_type           = "gp3"
+              iops                  = 3000
+              throughput            = 125
+              encrypted             = true
+              delete_on_termination = true
+            }
+          }
+        }
       }
     } : {}
   ) ## end merge function 
