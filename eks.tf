@@ -62,6 +62,14 @@ module "eks" {
   }
   # Extend node-to-node security group rules
   node_security_group_additional_rules = {
+    ingress_samba_server = {
+      description                   = "Cluster to node 445 (Samba Server)"
+      protocol                      = "tcp"
+      from_port                     = 445
+      to_port                       = 445
+      type                          = "ingress"
+      source_cluster_security_group = true 
+    }
     # ingress_self_all = {
     #   description = "Node to node all ports/protocols"
     #   protocol    = "-1"
