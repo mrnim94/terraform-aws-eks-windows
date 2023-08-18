@@ -56,6 +56,13 @@ module "eks" {
     iam_role_additional_policies = {
       AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     }
+    
+    ### https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/self_managed_node_group/main.tf#L66-L72
+    ## enable discovery of autoscaling groups by cluster-autoscaler
+    autoscaling_group_tags = {
+      "k8s.io/cluster-autoscaler/enabled" : true,
+      "k8s.io/cluster-autoscaler/${var.eks_cluster_name}" : "owned",
+    }
   }
   tags = {
     Name = "${var.eks_cluster_name}"
