@@ -116,7 +116,7 @@ module "eks" {
         #####################
         bootstrap_extra_args = chomp(
         <<-EOT
-        --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=apps=true'
+        --kubelet-extra-args '--node-labels=apps=true'
         EOT
         )
 
@@ -151,7 +151,7 @@ module "eks" {
         #####################
         bootstrap_extra_args = chomp(
         <<-EOT
-        -KubeletExtraArgs '--max-pods=${var.max_ips_per_node} --node-labels=apps=true'
+        -KubeletExtraArgs '--node-labels=apps=true'
         EOT
         )
 
@@ -186,7 +186,7 @@ module "eks" {
         ami_id = data.aws_ami.lin_ami.id
         bootstrap_extra_args = chomp(
           <<-EOT
-          --kubelet-extra-args '--max-pods=${var.max_ips_per_node} --node-labels=${var.node_labels} --register-with-taints=${var.node_taints}'
+          --kubelet-extra-args '--node-labels=${var.node_labels} --register-with-taints=${var.node_taints}'
           EOT
         )
 
@@ -207,18 +207,6 @@ module "eks" {
       }
     } : {}
   ) ## end merge function 
-
-  cluster_addons = {
-    vpc-cni = {
-      configuration_values = jsonencode({
-        env = {
-          # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
-          ENABLE_PREFIX_DELEGATION = "true"
-          WARM_PREFIX_TARGET       = "1"
-        }
-      })
-    }
-  }
 }
 
 ### Prerequisites for Windows Node enablement
