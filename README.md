@@ -111,7 +111,7 @@ output "out_private_subnets" {
 
 module "eks-windows" {
     source  = "mrnim94/eks-windows/aws"
-    version = "2.0.0"
+    version = "2.2.2"
     region = var.region
     eks_cluster_name = local.cluster_name
     eks_cluster_version = "1.24"
@@ -141,7 +141,7 @@ Suppose you create the individual node group for a particular purpose such as "s
 
 module "eks-windows" {
   source  = "mrnim94/eks-windows/aws"
-  version = "2.0.0"
+  version = "2.2.2"
   ####....
   ######....
 
