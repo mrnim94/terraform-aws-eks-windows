@@ -111,7 +111,7 @@ output "out_private_subnets" {
 
 module "eks-windows" {
     source  = "mrnim94/eks-windows/aws"
-    version = "2.2.2"
+    version = "2.2.3"
     region = var.region
     eks_cluster_name = local.cluster_name
     eks_cluster_version = "1.24"
@@ -130,6 +130,39 @@ module "eks-windows" {
 }
 ```
 
+### create output.tf   
+We will install many add-ons and applications that need the EKS information such as:   
+- eks_cluster_certificate_authority_data: Base64 encoded certificate data required to communicate with the cluster
+- eks_cluster_endpoint: Endpoint for the EKS cluster. Used to communicate with the cluster.
+- eks_cluster_name: The name of the EKS cluster
+- aws_iam_openid_connect_provider_arn: ARN of the OIDC provider for the EKS cluster. Used for setting up IAM roles for service accounts.   
+
+I suggest you create the extra "output.tf" file such as:
+
+```hcl
+# EKS cluster name
+output "cluster_name" {
+  description = "The name of EKS cluster"
+  value       = module.eks-windows.cluster_name
+}
+# EKS cluster endpoint
+output "cluster_endpoint" {
+  description = "API server endpoint of EKS cluster"
+  value       = module.eks-windows.cluster_endpoint
+}
+# EKS cluster certificate authority
+output "cluster_certificate_authority_data" {
+  description = "The certificate authority of EKS cluster"
+  value       = module.eks-windows.cluster_certificate_authority_data
+}
+ 
+# EKS cluster OpenID Connect provider URL
+output "oidc_provider_arn" {
+  description = "The certificate authority of EKS cluster"
+  value       = module.eks-windows.oidc_provider_arn
+}
+``` 
+
 ## Extra node for special cases   
 
 Arcording Issuse: https://github.com/mrnim94/terraform-aws-eks-windows/issues/11   
@@ -141,7 +174,7 @@ Suppose you create the individual node group for a particular purpose such as "s
 
 module "eks-windows" {
   source  = "mrnim94/eks-windows/aws"
-  version = "2.2.2"
+  version = "2.2.3"
   ####....
   ######....
 
