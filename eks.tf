@@ -12,6 +12,7 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 locals {
     account_id = data.aws_caller_identity.current.account_id
+    effective_win_subnet_ids = length(var.extra_subnet_ids) > 0 ? var.extra_subnet_ids : var.private_subnet_ids
 }
 #### Nodegroups - Images
 
@@ -184,6 +185,7 @@ module "eks" {
         max_size = var.extra_max_size
         min_size = var.extra_min_size
         ami_id = data.aws_ami.lin_ami.id
+        subnet_ids = local.effective_win_subnet_ids
         bootstrap_extra_args = chomp(
           <<-EOT
           --kubelet-extra-args '--node-labels=${var.node_labels} --register-with-taints=${var.node_taints}'

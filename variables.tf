@@ -97,6 +97,13 @@ variable "extra_desired_size" {
   type        = string
   default = "1"
 }
+
+variable "extra_subnet_ids" {
+ description = "List of subnet IDs for Extra node group"
+ type        = list(string)
+ default     = []
+}
+
 variable "node_labels" {
   description = "Node labels for the EKS nodes. Exp: `node_labels = key1=value1,key2=value2`"
   type        = string
