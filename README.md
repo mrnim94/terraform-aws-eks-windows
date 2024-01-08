@@ -111,7 +111,7 @@ output "out_private_subnets" {
 
 module "eks-windows" {
     source  = "mrnim94/eks-windows/aws"
-    version = "2.3.4"
+    version = "2.5.0"
     region = var.region
     eks_cluster_name = local.cluster_name
     eks_cluster_version = "1.24"
@@ -174,7 +174,7 @@ Suppose you create the individual node group for a particular purpose such as "s
 
 module "eks-windows" {
   source  = "mrnim94/eks-windows/aws"
-  version = "2.3.4"
+  version = "2.5.0"
   ####....
   ######....
 
@@ -189,3 +189,42 @@ module "eks-windows" {
 }
 ```
 
+### Assign the specific subnet ids for Extra node   
+
+If you only want the EC2 of the Extra node which is created on the specific subnet, you will need to use **extra_subnet_ids** variable.   
+First, you need to get the subnet IDs of the existing VPCs that belong to availability zones.
+
+```hcl
+data "aws_subnets" "eu_central_1b" {
+  filter {
+    name   = "vpc-id"
+    values = [data.terraform_remote_state.network.outputs.vpc_id]
+  }
+
+  filter {
+    name   = "availability-zone"
+    values = ["eu-central-1b"]
+  }
+}
+```
+
+Next, transfer IDs at data "aws_subnets" to "extra_subnet_ids" variable.   
+
+
+module "eks-windows" {
+  source  = "mrnim94/eks-windows/aws"
+  version = "2.5.0"
+  ####....
+  ######....
+
+  ### For extra Node Group
+  extra_node_group = true
+  extra_desired_size = 1
+  extra_max_size = 1
+  extra_min_size = 1
+  extra_instance_type = "m5.2xlarge"
+  node_taints = "test=true:NoSchedule"
+  node_labels = "key1=value1,key2=value2"
+  extra_subnet_ids = data.aws_subnets.eu_central_1b.ids
+}
+```
