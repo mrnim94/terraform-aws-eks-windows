@@ -189,7 +189,8 @@ module "eks-windows" {
 }
 ```
 
-### Assign the specific subnet ids for Extra node   
+### Assign the specific subnet ids for Extra node  
+Arcording Issuse: https://github.com/mrnim94/terraform-aws-eks-windows/issues/29     
 
 If you only want the EC2 of the Extra node which is created on the specific subnet, you will need to use **extra_subnet_ids** variable.   
 First, you need to get the subnet IDs of the existing VPCs that belong to availability zones.
@@ -210,7 +211,7 @@ data "aws_subnets" "eu_central_1b" {
 
 Next, transfer IDs at data "aws_subnets" to "extra_subnet_ids" variable.   
 
-
+```hcl
 module "eks-windows" {
   source  = "mrnim94/eks-windows/aws"
   version = "2.5.0"
