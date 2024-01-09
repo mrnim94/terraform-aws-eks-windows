@@ -62,11 +62,11 @@ variable "node_host_key_name" {
 }
 
 
-variable "max_ips_per_node" {
-  description = "Calculate the number of maximum pods per node, https://nimtechnology.com/2023/06/23/eks-ips-increase-most-many-ips-as-possible-on-each-node-of-your-eks/#2221_Adjust_kubelet"
-  type        = string
-  default = "110"
-}
+# variable "max_ips_per_node" {
+#   description = "Calculate the number of maximum pods per node, https://nimtechnology.com/2023/06/23/eks-ips-increase-most-many-ips-as-possible-on-each-node-of-your-eks/#2221_Adjust_kubelet"
+#   type        = string
+#   default = "110"
+# }
 
 ##### Extra node
 ################
