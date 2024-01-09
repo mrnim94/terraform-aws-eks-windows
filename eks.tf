@@ -188,7 +188,7 @@ module "eks" {
         subnet_ids = local.effective_win_subnet_ids
         bootstrap_extra_args = chomp(
           <<-EOT
-          --kubelet-extra-args '--node-labels=${var.node_labels} --register-with-taints=${var.node_taints}'
+          --kubelet-extra-args '--node-labels=${var.extra_node_labels} --register-with-taints=${var.extra_node_taints}'
           EOT
         )
 
