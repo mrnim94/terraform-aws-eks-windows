@@ -162,7 +162,7 @@ module "eks" {
         <<-EOT
         Set-MpPreference -DisableRealtimeMonitoring $true
         
-        EOT
+EOT
         )
         
 
