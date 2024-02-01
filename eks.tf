@@ -150,12 +150,15 @@ module "eks" {
         #####################
         #### BOOTSTRAPING ###
         #####################
+        pre_bootstrap_user_data = chomp(
+        <<-EOT
+        Set-MpPreference -DisableRealtimeMonitoring $true
+        EOT
+        )
+
         bootstrap_extra_args = chomp(
         <<-EOT
         -KubeletExtraArgs '--node-labels=apps=true'
-        <powershell>
-        Set-MpPreference -DisableRealtimeMonitoring $true
-        </powershell>
         EOT
         )
         
