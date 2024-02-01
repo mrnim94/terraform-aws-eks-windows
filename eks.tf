@@ -170,7 +170,7 @@ module "eks" {
         ebs_optimized     = true
         block_device_mappings = {
           xvda = {
-            device_name = "/dev/xvda"
+            device_name = "/dev/sda1"
             ebs = {
               volume_size           = 100
               volume_type           = "gp3"
