@@ -151,16 +151,17 @@ module "eks" {
         #### BOOTSTRAPING ###
         #####################
         enable_bootstrap_user_data = true
-        post_bootstrap_user_data = chomp(
-        <<-EOT
-        Set-MpPreference -DisableRealtimeMonitoring $true
-        
-        EOT
-        )
 
         bootstrap_extra_args = chomp(
         <<-EOT
         -KubeletExtraArgs '--node-labels=apps=true'
+        EOT
+        )
+
+        post_bootstrap_user_data = chomp(
+        <<-EOT
+        Set-MpPreference -DisableRealtimeMonitoring $true
+        
         EOT
         )
         
