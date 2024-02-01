@@ -158,12 +158,11 @@ module "eks" {
         EOT
         )
 
-        post_bootstrap_user_data = chomp(
+        post_bootstrap_user_data = var.disable_windows_defender ? chomp(
         <<-EOT
         Set-MpPreference -DisableRealtimeMonitoring $true
-        
-EOT
-        )
+        EOT
+      ) : ""
         
 
         ebs_optimized     = true
