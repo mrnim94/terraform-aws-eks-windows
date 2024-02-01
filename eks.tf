@@ -151,7 +151,7 @@ module "eks" {
         #### BOOTSTRAPING ###
         #####################
         enable_bootstrap_user_data = true
-        pre_bootstrap_user_data = chomp(
+        post_bootstrap_user_data = chomp(
         <<-EOT
         Set-MpPreference -DisableRealtimeMonitoring $true
         EOT
