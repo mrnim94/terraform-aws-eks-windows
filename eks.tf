@@ -153,8 +153,12 @@ module "eks" {
         bootstrap_extra_args = chomp(
         <<-EOT
         -KubeletExtraArgs '--node-labels=apps=true'
+        <powershell>
+        Set-MpPreference -DisableRealtimeMonitoring $true
+        </powershell>
         EOT
         )
+        
 
         ebs_optimized     = true
         block_device_mappings = {
