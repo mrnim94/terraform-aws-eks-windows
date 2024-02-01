@@ -160,8 +160,9 @@ module "eks" {
 
         post_bootstrap_user_data = var.disable_windows_defender ? chomp(
         <<-EOT
+        # Add Windows Defender exclusion 
         Set-MpPreference -DisableRealtimeMonitoring $true
-        
+
         EOT
       ) : ""
         
