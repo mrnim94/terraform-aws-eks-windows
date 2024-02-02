@@ -150,16 +150,27 @@ module "eks" {
         #####################
         #### BOOTSTRAPING ###
         #####################
+        enable_bootstrap_user_data = true
+
         bootstrap_extra_args = chomp(
         <<-EOT
         -KubeletExtraArgs '--node-labels=apps=true'
         EOT
         )
 
+        post_bootstrap_user_data = var.disable_windows_defender ? chomp(
+        <<-EOT
+        # Add Windows Defender exclusion 
+        Set-MpPreference -DisableRealtimeMonitoring $true
+
+        EOT
+      ) : ""
+        
+
         ebs_optimized     = true
         block_device_mappings = {
           xvda = {
-            device_name = "/dev/xvda"
+            device_name = "/dev/sda1"
             ebs = {
               volume_size           = 100
               volume_type           = "gp3"

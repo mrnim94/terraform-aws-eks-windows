@@ -116,3 +116,9 @@ variable "extra_node_taints" {
   default     = ""
 }
 
+
+variable "disable_windows_defender" {
+  description = "Flag to disable Windows Defender. Set to true to disable."
+  type        = bool
+  default     = false  # Set the default as per your requirement
+}
