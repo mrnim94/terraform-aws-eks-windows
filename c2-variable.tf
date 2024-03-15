@@ -85,5 +85,10 @@ variable "win_instance_type" {
 variable "windows_ami_type" {
   description = "AMI type for the Windows Nodes."
   type        = string
-  default = "WINDOWS_CORE_2022_x86_64"
+  default = "WINDOWS_CORE_2019_x86_64"
+}
+
+variable "node_host_key_name" {
+  description = "Please enter the name of the SSH key pair that should be assigned to the worker nodes of the cluster"
+  type        = string
 }

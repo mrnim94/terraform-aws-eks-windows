@@ -25,6 +25,7 @@ module "eks" {
       min_size       = var.lin_min_size
       max_size       = var.lin_max_size
       desired_size   = var.lin_desired_size
+      key_name = var.node_host_key_name
     }
     windows = {
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
@@ -39,6 +40,7 @@ module "eks" {
       min_size       = var.win_min_size
       max_size       = var.win_max_size
       desired_size   = var.win_desired_size
+      key_name = var.node_host_key_name
     }
   }
   cluster_addons = {
