@@ -46,19 +46,12 @@ module "eks" {
       #####################
       enable_bootstrap_user_data = true
 
-      bootstrap_extra_args = chomp(
-      <<-EOT
-      -KubeletExtraArgs '--node-labels=apps=true'
-      EOT
-      )
-
-      post_bootstrap_user_data = var.disable_windows_defender ? chomp(
-      <<-EOT
+      post_bootstrap_user_data = var.disable_windows_defender ? chomp(<<-EOT
       # Add Windows Defender exclusion 
       Set-MpPreference -DisableRealtimeMonitoring $true
 
       EOT
-    ) : ""
+      ) : ""
     }
   }
   cluster_addons = {
