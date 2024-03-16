@@ -37,6 +37,7 @@ module "eks" {
       key_name = var.node_host_key_name
     }
     windows = {
+      platform = "windows"
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
       # use_custom_launch_template = false
