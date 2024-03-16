@@ -63,7 +63,9 @@ module "eks" {
       Set-MpPreference -DisableRealtimeMonitoring $true
 
       EOT
-      ) : ""
+    ) : ""
+
+          
     }
   }
   cluster_addons = {
