@@ -64,12 +64,6 @@ variable "win_min_size" {
   type        = number
 }
 
-variable "disable_windows_defender" {
-  description = "Flag to disable Windows Defender. Set to true to disable."
-  type        = bool
-  default     = false  # Set the default as per your requirement
-}
-
 variable "win_desired_size" {
   description = "Desired capacity for Windows nodes for the EKS."
   default     = 1
@@ -97,4 +91,10 @@ variable "windows_ami_type" {
 variable "node_host_key_name" {
   description = "Please enter the name of the SSH key pair that should be assigned to the worker nodes of the cluster"
   type        = string
+}
+
+variable "disable_windows_defender" {
+  description = "Flag to disable Windows Defender. Set to true to disable."
+  type        = bool
+  default     = false  # Set the default as per your requirement
 }
