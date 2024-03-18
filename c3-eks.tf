@@ -16,6 +16,17 @@ module "eks" {
   vpc_id                         = var.vpc_id
   cluster_endpoint_public_access = true
 
+  node_security_group_additional_rules = {
+    ingress_self_all = {
+      description = "Node to node all ports/protocols"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      type        = "ingress"
+      self        = true
+    }
+  }
+
   # Give the Terraform identity admin access to the cluster
   # which will allow resources to be deployed into the cluster
   enable_cluster_creator_admin_permissions = true
