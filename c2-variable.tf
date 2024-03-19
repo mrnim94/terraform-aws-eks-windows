@@ -85,7 +85,7 @@ variable "win_instance_type" {
 variable "windows_ami_type" {
   description = "AMI type for the Windows Nodes."
   type        = string
-  default = "WINDOWS_CORE_2019_x86_64"
+  default     = "WINDOWS_CORE_2019_x86_64"
 }
 
 variable "node_host_key_name" {
@@ -96,5 +96,54 @@ variable "node_host_key_name" {
 variable "disable_windows_defender" {
   description = "Flag to disable Windows Defender. Set to true to disable."
   type        = bool
-  default     = false  # Set the default as per your requirement
+  default     = false # Set the default as per your requirement
+}
+
+######################
+## EXTRA NODE GROUP ##
+######################
+variable "extra_node_group" {
+  description = "When you want to create a extra node group for the special purpose"
+  type        = bool
+  default     = false # Set to true to enable the extra_node_group, or false to disable it
+}
+
+variable "extra_instance_type" {
+  description = "Please enter the instance type to be used for the extra Linux worker nodes"
+  type        = string
+  default     = "t3.xlarge"
+}
+variable "extra_min_size" {
+  description = "Please enter the minimal size for the extra Linux ASG"
+  type        = string
+  default     = "1"
+}
+variable "extra_max_size" {
+  description = "Please enter the maximal size for the extra Linux ASG"
+  type        = string
+  default     = "1"
+}
+
+variable "extra_desired_size" {
+  description = "Please enter the desired size for the extra Linux ASG"
+  type        = string
+  default     = "1"
+}
+
+variable "extra_node_labels" {
+  description = "Node labels for the EKS nodes. Exp: `node_labels = key1=value1,key2=value2`"
+  type        = map(string)
+  default     = null
+}
+
+variable "extra_node_taints" {
+  description = "Taints for the EKS nodes, Exp: `node_taints = test=true:NoSchedule`"
+  type        = any
+  default     = {}
+}
+
+variable "extra_subnet_ids" {
+  description = "List of subnet IDs for Extra node group"
+  type        = list(string)
+  default     = []
 }
