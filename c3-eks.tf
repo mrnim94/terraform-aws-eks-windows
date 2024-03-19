@@ -65,13 +65,12 @@ module "eks" {
       key_name = var.node_host_key_name
 
       enable_bootstrap_user_data = true
-      post_bootstrap_user_data = var.disable_windows_defender ? chomp(
-      <<EOT
+      post_bootstrap_user_data = (var.disable_windows_defender ? <<-EOT
       # Add Windows Defender exclusion 
       Set-MpPreference -DisableRealtimeMonitoring $true
-
+      
       EOT
-      ) : ""
+      : "")
     }
   }, // begin dynamic configurations
   { for ng in var.custom_node_groups : ng.name => {
