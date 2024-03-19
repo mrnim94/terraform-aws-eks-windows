@@ -69,7 +69,7 @@ module "eks" {
       <<-EOT
       # Add Windows Defender exclusion 
       Set-MpPreference -DisableRealtimeMonitoring $true
-      
+
       EOT
       ) : ""
     }
@@ -81,6 +81,17 @@ module "eks" {
       tags = {
         "k8s.io/cluster-autoscaler/enabled"                 = "true",
         "k8s.io/cluster-autoscaler/${var.eks_cluster_name}" = "owned"
+      }
+
+      extra_node_taints = [
+        {
+          key    = "test"
+          value  = "true"
+          effect = "NO_SCHEDULE"
+        }
+      ]
+      extra_node_labels = {
+        "deployment" : "smb"
       }
 
       instance_types = [ng.instance_type]
