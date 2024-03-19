@@ -98,3 +98,23 @@ variable "disable_windows_defender" {
   type        = bool
   default     = false  # Set the default as per your requirement
 }
+
+variable "custom_node_groups" {
+  description = "List of custom node group configurations"
+  type = list(object({
+    name            = string
+    platform        = string
+    instance_type   = string
+    key_name        = string
+    desired_size    = number
+    max_size        = number
+    min_size        = number
+    node_labels     = string
+    node_taints     = string
+    volume_size     = number
+    volume_type     = string
+    iops            = number
+    throughput      = number
+  }))
+  default = []
+}

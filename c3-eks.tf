@@ -31,7 +31,7 @@ module "eks" {
   # which will allow resources to be deployed into the cluster
   enable_cluster_creator_admin_permissions = true
 
-  eks_managed_node_groups = {
+  eks_managed_node_groups = merge( {
     linux = {
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
@@ -51,7 +51,7 @@ module "eks" {
       # platform = "windows" # Custom AMI
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-      # use_custom_launch_template = false # Custom AMI
+      use_custom_launch_template = false # NO Custom AMI
       ami_type                   = var.windows_ami_type
       # ami_id = data.aws_ami.win_ami.id
       tags = {
@@ -63,22 +63,25 @@ module "eks" {
       max_size       = var.win_max_size
       desired_size   = var.win_desired_size
       key_name = var.node_host_key_name
-    #   #####################
-    #   #### BOOTSTRAPING ###
-    #   #####################
-    #   enable_bootstrap_user_data = true
+    }
+  }, // begin dynamic configurations
+  { for ng in var.custom_node_groups : ng.name => {
+      # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
+      # so we need to disable it to use the default template provided by the AWS EKS managed node group service
+      use_custom_launch_template = false
+      tags = {
+        "k8s.io/cluster-autoscaler/enabled"                 = "true",
+        "k8s.io/cluster-autoscaler/${var.eks_cluster_name}" = "owned"
+      }
 
-    #   post_bootstrap_user_data = var.disable_windows_defender ? chomp(
-    #   <<-EOT
-    #   # Add Windows Defender exclusion 
-    #   Set-MpPreference -DisableRealtimeMonitoring $true
-
-    #   EOT
-    # ) : ""
-
-
+      instance_types = [ng.instance_type]
+      min_size       = ng.min_size
+      max_size       = ng.max_sizw
+      desired_size   = ng.desired_size
+      key_name = var.node_host_key_name
     }
   }
+  ) //end Merge
   cluster_addons = {
     kube-proxy = {
       most_recent = true
