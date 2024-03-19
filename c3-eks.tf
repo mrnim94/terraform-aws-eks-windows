@@ -83,9 +83,7 @@ module "eks" {
     var.extra_node_group ? {
       extra = {
         count         = var.extra_node_group ? 1 : 0
-        platform      = "linux"
-        name          = "extra"
-        instance_type = var.extra_instance_type
+        instance_type = [var.extra_instance_type]
         key_name      = var.node_host_key_name
         desired_size  = var.extra_desired_size
         max_size      = var.extra_max_size

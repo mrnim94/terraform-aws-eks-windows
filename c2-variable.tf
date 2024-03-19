@@ -111,7 +111,7 @@ variable "extra_node_group" {
 variable "extra_instance_type" {
   description = "Please enter the instance type to be used for the extra Linux worker nodes"
   type        = string
-  default     = "t3.xlarge"
+  default     = "m5.large"
 }
 variable "extra_min_size" {
   description = "Please enter the minimal size for the extra Linux ASG"
