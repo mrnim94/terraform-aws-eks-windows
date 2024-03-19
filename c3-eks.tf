@@ -76,7 +76,7 @@ module "eks" {
 
       instance_types = [ng.instance_type]
       min_size       = ng.min_size
-      max_size       = ng.max_sizw
+      max_size       = ng.max_size
       desired_size   = ng.desired_size
       key_name = var.node_host_key_name
     }
