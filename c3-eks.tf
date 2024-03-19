@@ -48,12 +48,12 @@ module "eks" {
       key_name = var.node_host_key_name
     }
     windows = {
-      # platform = "windows" # Custom AMI
+      platform = "windows" # Custom AMI
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-      use_custom_launch_template = false # NO Custom AMI
-      ami_type                   = var.windows_ami_type
-      # ami_id = data.aws_ami.win_ami.id
+      # use_custom_launch_template = false # NO Custom AMI
+      # ami_type                   = var.windows_ami_type
+      ami_id = data.aws_ami.win_ami.id
       tags = {
         "k8s.io/cluster-autoscaler/enabled"                 = "true",
         "k8s.io/cluster-autoscaler/${var.eks_cluster_name}" = "owned"
@@ -63,6 +63,15 @@ module "eks" {
       max_size       = var.win_max_size
       desired_size   = var.win_desired_size
       key_name = var.node_host_key_name
+
+      enable_bootstrap_user_data = true
+      post_bootstrap_user_data = var.disable_windows_defender ? chomp(
+      <<-EOT
+      # Add Windows Defender exclusion 
+      Set-MpPreference -DisableRealtimeMonitoring $true
+      
+      EOT
+      ) : ""
     }
   }, // begin dynamic configurations
   { for ng in var.custom_node_groups : ng.name => {
