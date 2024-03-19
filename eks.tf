@@ -47,7 +47,7 @@
 #     iam_role_additional_policies = {
 #       AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 #     }
-    
+
 #     ### https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/self_managed_node_group/main.tf#L66-L72
 #     ## enable discovery of autoscaling groups by cluster-autoscaler
 #     autoscaling_group_tags = {
@@ -155,7 +155,7 @@
 
 #         EOT
 #       ) : ""
-        
+
 
 #         ebs_optimized     = true
 #         block_device_mappings = {
