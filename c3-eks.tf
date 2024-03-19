@@ -83,14 +83,14 @@ module "eks" {
         "k8s.io/cluster-autoscaler/${var.eks_cluster_name}" = "owned"
       }
 
-      extra_node_taints = [
+      taints = [
         {
           key    = "test"
           value  = "true"
           effect = "NO_SCHEDULE"
         }
       ]
-      extra_node_labels = {
+      labels = {
         "deployment" : "smb"
       }
 
