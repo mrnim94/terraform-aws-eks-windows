@@ -131,13 +131,13 @@ variable "extra_desired_size" {
 }
 
 variable "extra_node_labels" {
-  description = "Node labels for the EKS nodes. Exp: `node_labels = key1=value1,key2=value2`"
+  description = "Node labels for the EKS nodes"
   type        = map(string)
   default     = null
 }
 
 variable "extra_node_taints" {
-  description = "Taints for the EKS nodes, Exp: `node_taints = test=true:NoSchedule`"
+  description = "Taints for the EKS nodes"
   type        = any
   default     = {}
 }
