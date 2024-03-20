@@ -36,7 +36,7 @@ module "eks" {
       linux = {
         # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
         # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-        use_custom_launch_template = false
+
         tags = {
           "k8s.io/cluster-autoscaler/enabled"                 = "true",
           "k8s.io/cluster-autoscaler/${var.eks_cluster_name}" = "owned"
@@ -47,6 +47,21 @@ module "eks" {
         max_size       = var.lin_max_size
         desired_size   = var.lin_desired_size
         key_name       = var.node_host_key_name
+
+        ebs_optimized = true
+        block_device_mappings = {
+          xvda = {
+            device_name = "/dev/xvda"
+            ebs = {
+              volume_size           = 100
+              volume_type           = "gp3"
+              iops                  = 3000
+              throughput            = 125
+              encrypted             = true
+              delete_on_termination = true
+            }
+          }
+        }
       }
       windows = {
         platform = "windows" # Custom AMI
@@ -70,6 +85,12 @@ module "eks" {
         #   #####################
         enable_bootstrap_user_data = true
 
+        bootstrap_extra_args = chomp(
+          <<-EOT
+        -KubeletExtraArgs '--node-labels=apps=true'
+        EOT
+        )
+
         post_bootstrap_user_data = var.disable_windows_defender ? chomp(
           <<-EOT
           # Add Windows Defender exclusion 
@@ -77,6 +98,22 @@ module "eks" {
 
           EOT
         ) : ""
+
+
+        ebs_optimized = true
+        block_device_mappings = {
+          xvda = {
+            device_name = "/dev/sda1"
+            ebs = {
+              volume_size           = 100
+              volume_type           = "gp3"
+              iops                  = 3000
+              throughput            = 125
+              encrypted             = true
+              delete_on_termination = true
+            }
+          }
+        }
       }
     },
 
@@ -100,6 +137,21 @@ module "eks" {
         #   --kubelet-extra-args '--node-labels=${var.extra_node_labels} --register-with-taints=${var.extra_node_taints}'
         #   EOT
         # )
+
+        ebs_optimized = true
+        block_device_mappings = {
+          xvda = {
+            device_name = "/dev/xvda"
+            ebs = {
+              volume_size           = 100
+              volume_type           = "gp3"
+              iops                  = 3000
+              throughput            = 125
+              encrypted             = true
+              delete_on_termination = true
+            }
+          }
+        }
       }
     } : {}
   )
