@@ -1,6 +1,6 @@
 # terraform-aws-eks-windows
 
-The eks windows module is based on the eks module v19.x.x
+The eks windows module is based on the eks module v20.x.x
 
 I want to provide the easy ways for you to install the eks windows
 
