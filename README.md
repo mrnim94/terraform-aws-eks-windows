@@ -184,8 +184,23 @@ module "eks-windows" {
   extra_max_size = 1
   extra_min_size = 1
   extra_instance_type = "m5.2xlarge"
-  node_taints = "test=true:NoSchedule"
-  node_labels = "key1=value1,key2=value2"
+  extra_node_taints = [
+    {
+      key    = "key1"
+      value  = "true"
+      effect = "NO_SCHEDULE" # effect is required. Valid effect value = [NO_SCHEDULE, NO_EXECUTE, PREFER_NO_SCHEDULE]
+    },
+    {
+      key    = "key2"
+      value  = "true"
+      effect = "PREFER_NO_SCHEDULE"
+    }
+  ]
+  extra_node_labels = {
+    "key1" : "value1"
+    "key2" : "value2"
+  }
+
 }
 ```
 
@@ -224,8 +239,22 @@ module "eks-windows" {
   extra_max_size = 1
   extra_min_size = 1
   extra_instance_type = "m5.2xlarge"
-  extra_node_taints = "test=true:NoSchedule"
-  extra_node_labels = "key1=value1,key2=value2"
+  extra_node_taints = [
+    {
+      key    = "key1"
+      value  = "true"
+      effect = "NO_SCHEDULE" # effect is required. Valid effect value = [NO_SCHEDULE, NO_EXECUTE, PREFER_NO_SCHEDULE]
+    },
+    {
+      key    = "key2"
+      value  = "true"
+      effect = "PREFER_NO_SCHEDULE"
+    }
+  ]
+  extra_node_labels = {
+    "key1" : "value1"
+    "key2" : "value2"
+  }
   extra_subnet_ids = data.aws_subnets.eu_central_1b.ids
 }
 ```
