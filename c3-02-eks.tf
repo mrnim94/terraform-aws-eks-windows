@@ -9,7 +9,7 @@ data "aws_ami" "win_ami" {
 
 module "eks" {
   source                         = "terraform-aws-modules/eks/aws"
-  version                        = "20.8.3"
+  version                        = "20.8.4"
   cluster_name                   = var.eks_cluster_name
   cluster_version                = var.eks_cluster_version
   subnet_ids                     = concat(var.private_subnet_ids, var.public_subnet_ids)
