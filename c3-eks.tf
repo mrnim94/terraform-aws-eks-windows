@@ -178,6 +178,7 @@ resource "null_resource" "apply" {
     interpreter = ["/bin/bash", "-c"]
     environment = {
       KUBECONFIG = self.triggers.kubeconfig
+      YAML_CONTENT = local.vpc_resource_controller_configmap_yaml
     }
     command = self.triggers.cmd_patch
   }
