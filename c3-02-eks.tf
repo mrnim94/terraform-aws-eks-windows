@@ -174,3 +174,66 @@ module "eks" {
     "scheduler"
   ]
 }
+
+### Prerequisites for Windows Node enablement
+data "aws_eks_cluster_auth" "this" {
+  name = module.eks.cluster_name
+}
+
+locals {
+  kubeconfig = yamlencode({
+    apiVersion      = "v1"
+    kind            = "Config"
+    current-context = "terraform"
+    clusters = [{
+      name = module.eks.cluster_name
+      cluster = {
+        certificate-authority-data = module.eks.cluster_certificate_authority_data
+        server                     = module.eks.cluster_endpoint
+      }
+    }]
+    contexts = [{
+      name = "terraform"
+      context = {
+        cluster = module.eks.cluster_name
+        user    = "terraform"
+      }
+    }]
+    users = [{
+      name = "terraform"
+      user = {
+        token = data.aws_eks_cluster_auth.this.token
+      }
+    }]
+  })
+
+  # the amazon-vpc-cni Configmap
+  vpc_resource_controller_configmap_yaml = <<-EOT
+  apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: amazon-vpc-cni
+    namespace: kube-system
+  data:
+    enable-windows-ipam: "true"
+  EOT
+}
+
+### Apply changes to aws_auth
+### Windows node Cluster enablement:  https://docs.aws.amazon.com/eks/latest/userguide/windows-support.html
+resource "null_resource" "apply" {
+  triggers = {
+    kubeconfig = base64encode(local.kubeconfig)
+    cmd_patch  = <<-EOT
+      echo "$YAML_CONTENT" | kubectl apply --kubeconfig <(echo $KUBECONFIG | base64 --decode) -f -
+    EOT
+  }
+    provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    environment = {
+      KUBECONFIG = self.triggers.kubeconfig
+      YAML_CONTENT = local.vpc_resource_controller_configmap_yaml
+    }
+    command = self.triggers.cmd_patch
+  }
+}
