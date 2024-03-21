@@ -120,3 +120,50 @@ module "eks" {
     "scheduler"
   ]
 }
+
+### Prerequisites for Windows Node enablement
+data "aws_eks_cluster_auth" "this" {
+  name = module.eks.cluster_name
+}
+
+locals {
+  kubeconfig = yamlencode({
+    apiVersion      = "v1"
+    kind            = "Config"
+    current-context = "terraform"
+    clusters = [{
+      name = module.eks.cluster_name
+      cluster = {
+        certificate-authority-data = module.eks.cluster_certificate_authority_data
+        server                     = module.eks.cluster_endpoint
+      }
+    }]
+    contexts = [{
+      name = "terraform"
+      context = {
+        cluster = module.eks.cluster_name
+        user    = "terraform"
+      }
+    }]
+    users = [{
+      name = "terraform"
+      user = {
+        token = data.aws_eks_cluster_auth.this.token
+      }
+    }]
+  })
+}
+
+resource "kubernetes_config_map_v1_data" "amazon_vpc_cni" {
+  metadata {
+    name      = "amazon-vpc-cni"
+    namespace = "kube-system"
+  }
+  data = {
+    enable-windows-ipam = true
+  }
+  force = true
+  depends_on = [
+    local.kubeconfig
+  ]
+}
