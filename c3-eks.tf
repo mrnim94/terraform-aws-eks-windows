@@ -152,18 +152,33 @@ locals {
       }
     }]
   })
+
+  # the vpc-resource-controller Configmap
+  vpc_resource_controller_configmap_yaml = <<-EOT
+  apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: vpc-resource-controller
+    namespace: kube-system
+  data:
+    enable-windows-ipam: "true"
+  EOT
 }
 
-resource "kubernetes_config_map_v1_data" "amazon_vpc_cni" {
-  metadata {
-    name      = "amazon-vpc-cni"
-    namespace = "kube-system"
+### Apply changes to aws_auth
+### Windows node Cluster enablement:  https://docs.aws.amazon.com/eks/latest/userguide/windows-support.html
+resource "null_resource" "apply" {
+  triggers = {
+    kubeconfig = base64encode(local.kubeconfig)
+    cmd_patch  = <<-EOT
+      echo "$YAML_CONTENT" | kubectl apply --kubeconfig <(echo $KUBECONFIG | base64 --decode) -f -
+    EOT
   }
-  data = {
-    enable-windows-ipam = true
+    provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    environment = {
+      KUBECONFIG = self.triggers.kubeconfig
+    }
+    command = self.triggers.cmd_patch
   }
-  force = true
-  depends_on = [
-    local.kubeconfig
-  ]
 }
