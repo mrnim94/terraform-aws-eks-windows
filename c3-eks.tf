@@ -153,12 +153,12 @@ locals {
     }]
   })
 
-  # the vpc-resource-controller Configmap
+  # the amazon-vpc-cni Configmap
   vpc_resource_controller_configmap_yaml = <<-EOT
   apiVersion: v1
   kind: ConfigMap
   metadata:
-    name: vpc-resource-controller
+    name: amazon-vpc-cni
     namespace: kube-system
   data:
     enable-windows-ipam: "true"
