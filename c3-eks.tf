@@ -168,6 +168,7 @@ locals {
 ### Apply changes to aws_auth
 ### Windows node Cluster enablement:  https://docs.aws.amazon.com/eks/latest/userguide/windows-support.html
 resource "null_resource" "apply" {
+  depends_on = [module.eks]  # Ensuring this resource is applied after the EKS module is fully provisioned
   triggers = {
     kubeconfig = base64encode(local.kubeconfig)
     cmd_patch  = <<-EOT
