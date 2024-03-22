@@ -1,11 +1,11 @@
-data "aws_eks_cluster" "cluster_windows" {
+data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_name
   depends_on = [
     module.eks
   ]
 }
 
-data "aws_eks_cluster_auth" "cluster_windows" {
+data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_name
   depends_on = [
     module.eks
@@ -13,9 +13,9 @@ data "aws_eks_cluster_auth" "cluster_windows" {
 }
 
 provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster_windows.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster_windows.certificate_authority[0].data)
-  token                  = data.aws_eks_cluster_auth.cluster_windows.token
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.cluster.token
   // Ensure the version of the Kubernetes provider you are using does not require `load_config_file`.
 }
 
@@ -37,4 +37,8 @@ resource "kubernetes_config_map_v1_data" "amazon_vpc_cni" {
   depends_on = [
     module.eks
   ]
+}
+
+output "eks_cluster_endpoint" {
+  value = data.aws_eks_cluster.cluster.endpoint
 }
