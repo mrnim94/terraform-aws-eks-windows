@@ -64,12 +64,12 @@ module "eks" {
         }
       }
       windows = {
-        platform = "windows" # Custom AMI
+        # platform = "windows" # Custom AMI
         # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
         # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-        # use_custom_launch_template = false # Custom AMI
-        # ami_type                   = var.windows_ami_type #####
-        ami_id = data.aws_ami.win_ami.id
+        use_custom_launch_template = false # Custom AMI
+        ami_type = var.windows_ami_type #####
+        # ami_id = data.aws_ami.win_ami.id
 
         tags = {
           "k8s.io/cluster-autoscaler/enabled"                 = "true",
@@ -80,24 +80,24 @@ module "eks" {
         max_size       = var.win_max_size
         desired_size   = var.win_desired_size
         key_name       = var.node_host_key_name
-        #   #####################
-        #   #### BOOTSTRAPING ###
-        #   #####################
-        enable_bootstrap_user_data = true
+        # #   #####################
+        # #   #### BOOTSTRAPING ###
+        # #   #####################
+        # enable_bootstrap_user_data = true
 
-        bootstrap_extra_args = chomp(
-          <<-EOT
-        -KubeletExtraArgs '--node-labels=apps=true'
-        EOT
-        )
+        # bootstrap_extra_args = chomp(
+        #   <<-EOT
+        # -KubeletExtraArgs '--node-labels=apps=true'
+        # EOT
+        # )
 
-        post_bootstrap_user_data = var.disable_windows_defender ? chomp(
-          <<-EOT
-          # Add Windows Defender exclusion 
-          Set-MpPreference -DisableRealtimeMonitoring $true
+        # post_bootstrap_user_data = var.disable_windows_defender ? chomp(
+        #   <<-EOT
+        #   # Add Windows Defender exclusion 
+        #   Set-MpPreference -DisableRealtimeMonitoring $true
 
-          EOT
-        ) : ""
+        #   EOT
+        # ) : ""
 
 
         ebs_optimized = true
@@ -173,67 +173,4 @@ module "eks" {
     "controllerManager",
     "scheduler"
   ]
-}
-
-### Prerequisites for Windows Node enablement
-data "aws_eks_cluster_auth" "this" {
-  name = module.eks.cluster_name
-}
-
-locals {
-  kubeconfig = yamlencode({
-    apiVersion      = "v1"
-    kind            = "Config"
-    current-context = "terraform"
-    clusters = [{
-      name = module.eks.cluster_name
-      cluster = {
-        certificate-authority-data = module.eks.cluster_certificate_authority_data
-        server                     = module.eks.cluster_endpoint
-      }
-    }]
-    contexts = [{
-      name = "terraform"
-      context = {
-        cluster = module.eks.cluster_name
-        user    = "terraform"
-      }
-    }]
-    users = [{
-      name = "terraform"
-      user = {
-        token = data.aws_eks_cluster_auth.this.token
-      }
-    }]
-  })
-
-  # the amazon-vpc-cni Configmap
-  vpc_resource_controller_configmap_yaml = <<-EOT
-  apiVersion: v1
-  kind: ConfigMap
-  metadata:
-    name: amazon-vpc-cni
-    namespace: kube-system
-  data:
-    enable-windows-ipam: "true"
-  EOT
-}
-
-### Apply changes to aws_auth
-### Windows node Cluster enablement:  https://docs.aws.amazon.com/eks/latest/userguide/windows-support.html
-resource "null_resource" "apply" {
-  triggers = {
-    kubeconfig = base64encode(local.kubeconfig)
-    cmd_patch  = <<-EOT
-      echo "$YAML_CONTENT" | kubectl apply --kubeconfig <(echo $KUBECONFIG | base64 --decode) -f -
-    EOT
-  }
-    provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    environment = {
-      KUBECONFIG = self.triggers.kubeconfig
-      YAML_CONTENT = local.vpc_resource_controller_configmap_yaml
-    }
-    command = self.triggers.cmd_patch
-  }
 }
