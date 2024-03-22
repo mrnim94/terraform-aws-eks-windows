@@ -172,9 +172,7 @@ resource "null_resource" "apply" {
   triggers = {
     kubeconfig = base64encode(local.kubeconfig)
     cmd_patch  = <<-EOT
-      for i in {1..5}; do
-        echo "$YAML_CONTENT" | kubectl apply --kubeconfig <(echo $KUBECONFIG | base64 --decode) -f - && break || sleep 10;
-      done
+      echo "$YAML_CONTENT" | kubectl apply --kubeconfig <(echo $KUBECONFIG | base64 --decode) -f -
     EOT
   }
     provisioner "local-exec" {
