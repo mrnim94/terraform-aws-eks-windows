@@ -13,22 +13,18 @@ provider "kubernetes" {
   // Ensure the version of the Kubernetes provider you are using does not require `load_config_file`.
 }
 
-resource "kubernetes_config_map" "amazon_vpc_cni" {
+# eks is spun up with aws-vpc-cni helm chart regardless if it is specified in cluster_addons
+# this config can't be set from terraform that I can see. The best option is to overwrite
+# # the existing configmap with the settings we need.
+resource "kubernetes_config_map_v1_data" "amazon_vpc_cni" {
   metadata {
     name      = "amazon-vpc-cni"
     namespace = "kube-system"
   }
-
   data = {
-    "enable-windows-ipam" = "true"
+    enable-windows-ipam = true
   }
-
-  lifecycle {
-    ignore_changes = [
-      data["enable-windows-ipam"],
-    ]
-  }
-
+  force = true
   depends_on = [
     module.eks
   ]
