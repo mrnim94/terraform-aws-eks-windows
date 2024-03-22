@@ -63,58 +63,58 @@ module "eks" {
           }
         }
       }
-      windows = {
-        # platform = "windows" # Custom AMI
-        # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
-        # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-        use_custom_launch_template = false # Custom AMI
-        ami_type = var.windows_ami_type #####
-        # ami_id = data.aws_ami.win_ami.id
+      # windows = {
+      #   # platform = "windows" # Custom AMI
+      #   # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
+      #   # so we need to disable it to use the default template provided by the AWS EKS managed node group service
+      #   use_custom_launch_template = false # Custom AMI
+      #   ami_type = var.windows_ami_type #####
+      #   # ami_id = data.aws_ami.win_ami.id
 
-        tags = {
-          "k8s.io/cluster-autoscaler/enabled"                 = "true",
-          "k8s.io/cluster-autoscaler/${var.eks_cluster_name}" = "owned"
-        }
-        instance_types = [var.win_instance_type]
-        min_size       = var.win_min_size
-        max_size       = var.win_max_size
-        desired_size   = var.win_desired_size
-        key_name       = var.node_host_key_name
-        # #   #####################
-        # #   #### BOOTSTRAPING ###
-        # #   #####################
-        # enable_bootstrap_user_data = true
+      #   tags = {
+      #     "k8s.io/cluster-autoscaler/enabled"                 = "true",
+      #     "k8s.io/cluster-autoscaler/${var.eks_cluster_name}" = "owned"
+      #   }
+      #   instance_types = [var.win_instance_type]
+      #   min_size       = var.win_min_size
+      #   max_size       = var.win_max_size
+      #   desired_size   = var.win_desired_size
+      #   key_name       = var.node_host_key_name
+      #   # #   #####################
+      #   # #   #### BOOTSTRAPING ###
+      #   # #   #####################
+      #   # enable_bootstrap_user_data = true
 
-        # bootstrap_extra_args = chomp(
-        #   <<-EOT
-        # -KubeletExtraArgs '--node-labels=apps=true'
-        # EOT
-        # )
+      #   # bootstrap_extra_args = chomp(
+      #   #   <<-EOT
+      #   # -KubeletExtraArgs '--node-labels=apps=true'
+      #   # EOT
+      #   # )
 
-        # post_bootstrap_user_data = var.disable_windows_defender ? chomp(
-        #   <<-EOT
-        #   # Add Windows Defender exclusion 
-        #   Set-MpPreference -DisableRealtimeMonitoring $true
+      #   # post_bootstrap_user_data = var.disable_windows_defender ? chomp(
+      #   #   <<-EOT
+      #   #   # Add Windows Defender exclusion 
+      #   #   Set-MpPreference -DisableRealtimeMonitoring $true
 
-        #   EOT
-        # ) : ""
+      #   #   EOT
+      #   # ) : ""
 
 
-        ebs_optimized = true
-        block_device_mappings = {
-          xvda = {
-            device_name = "/dev/sda1"
-            ebs = {
-              volume_size           = 100
-              volume_type           = "gp3"
-              iops                  = 3000
-              throughput            = 125
-              encrypted             = true
-              delete_on_termination = true
-            }
-          }
-        }
-      }
+      #   ebs_optimized = true
+      #   block_device_mappings = {
+      #     xvda = {
+      #       device_name = "/dev/sda1"
+      #       ebs = {
+      #         volume_size           = 100
+      #         volume_type           = "gp3"
+      #         iops                  = 3000
+      #         throughput            = 125
+      #         encrypted             = true
+      #         delete_on_termination = true
+      #       }
+      #     }
+      #   }
+      # }
     },
 
     var.extra_node_group ? {
