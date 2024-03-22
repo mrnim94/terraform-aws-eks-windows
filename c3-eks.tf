@@ -48,10 +48,10 @@ module "eks" {
       key_name = var.node_host_key_name
     }
     windows = {
-      platform = "windows" # Custom AMI
+      # platform = "windows" # Custom AMI
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-      # use_custom_launch_template = false # NO Custom AMI
+      use_custom_launch_template = false # NO Custom AMI
       ami_type = var.windows_ami_type
       # ami_id = data.aws_ami.win_ami.id
       tags = {
@@ -172,7 +172,9 @@ resource "null_resource" "apply" {
   triggers = {
     kubeconfig = base64encode(local.kubeconfig)
     cmd_patch  = <<-EOT
-      echo "$YAML_CONTENT" | kubectl apply --kubeconfig <(echo $KUBECONFIG | base64 --decode) -f -
+      for i in {1..5}; do
+        echo "$YAML_CONTENT" | kubectl apply --kubeconfig <(echo $KUBECONFIG | base64 --decode) -f - && break || sleep 10;
+      done
     EOT
   }
     provisioner "local-exec" {
