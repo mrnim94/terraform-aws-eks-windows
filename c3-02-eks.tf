@@ -23,7 +23,7 @@ module "eks" {
       from_port   = 0
       to_port     = 0
       type        = "ingress"
-      self        = true
+      cidr_blocks = concat(var.private_subnet_cidrs, var.public_subnet_cidrs)
     }
   }
 
