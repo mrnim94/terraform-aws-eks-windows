@@ -24,8 +24,8 @@ module "eks" {
   cluster_endpoint_public_access = true
 
   node_security_group_additional_rules = {
-    ingress_self_all = {
-      description = "Node to node all ports/protocols"
+    ingress_subnet_ids_all = {
+      description = "Node to node all ports/protocols in subnet IDs assigned to install EKS"
       protocol    = "-1"
       from_port   = 0
       to_port     = 0
