@@ -74,7 +74,7 @@ module "eks" {
         # platform = "windows" # Custom AMI
         # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
         # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-        use_custom_launch_template = false # Custom AMI
+        use_custom_launch_template = true # Custom AMI
         ami_type = var.windows_ami_type #####
         # ami_id = data.aws_ami.win_ami.id
 
