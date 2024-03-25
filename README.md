@@ -6,18 +6,6 @@ I want to provide the easy ways for you to install the eks windows
 
 ## Install EKS windows on vpc that is created by VPC Terrform Module.
 
-### Create folder and file: yaml-templates/vpc-resource-controller-configmap.yaml
-
-```hcl
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: amazon-vpc-cni
-  namespace: kube-system
-data:
-  enable-windows-ipam: "true"
-```
-
 ### variables.tf file
 
 ```hcl
