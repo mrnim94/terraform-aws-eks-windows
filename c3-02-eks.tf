@@ -87,24 +87,24 @@ module "eks" {
         max_size       = var.win_max_size
         desired_size   = var.win_desired_size
         key_name       = var.node_host_key_name
-        # #   #####################
-        # #   #### BOOTSTRAPING ###
-        # #   #####################
-        # enable_bootstrap_user_data = true
+        #   #####################
+        #   #### BOOTSTRAPING ###
+        #   #####################
+        enable_bootstrap_user_data = true
 
-        # bootstrap_extra_args = chomp(
-        #   <<-EOT
-        # -KubeletExtraArgs '--node-labels=apps=true'
-        # EOT
-        # )
+        bootstrap_extra_args = chomp(
+          <<-EOT
+        -KubeletExtraArgs '--node-labels=apps=true'
+        EOT
+        )
 
-        # post_bootstrap_user_data = var.disable_windows_defender ? chomp(
-        #   <<-EOT
-        #   # Add Windows Defender exclusion 
-        #   Set-MpPreference -DisableRealtimeMonitoring $true
+        post_bootstrap_user_data = var.disable_windows_defender ? chomp(
+          <<-EOT
+          # Add Windows Defender exclusion 
+          Set-MpPreference -DisableRealtimeMonitoring $true
 
-        #   EOT
-        # ) : ""
+          EOT
+        ) : ""
 
 
         ebs_optimized = true
