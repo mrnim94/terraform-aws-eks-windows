@@ -108,8 +108,8 @@ module "eks" {
 
 
         ebs_optimized = true
-        block_device_mappings = {
-          xvda = {
+        block_device_mappings = [
+          {
             device_name = "/dev/sda1"
             ebs = {
               volume_size           = 100
@@ -120,7 +120,7 @@ module "eks" {
               delete_on_termination = true
             }
           }
-        }
+        ]
       }
     },
 
