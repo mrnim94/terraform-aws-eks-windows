@@ -1,10 +1,17 @@
-data "aws_ami" "win_ami" {
-  most_recent = true
-  owners      = ["amazon"]
-  filter {
-    name   = "name"
-    values = ["Windows_Server-2019-English-Core-EKS_Optimized-${var.eks_cluster_version}-*"]
-  }
+# data "aws_ami" "win_ami" {
+#   most_recent = true
+#   owners      = ["amazon"]
+#   filter {
+#     name   = "name"
+#     values = ["Windows_Server-2019-English-Core-EKS_Optimized-${var.eks_cluster_version}-*"]
+#   }
+# }
+
+# Fetch CIDR blocks for each subnet ID
+data "aws_subnet" "subnets" {
+  for_each = toset(concat(var.private_subnet_ids, var.public_subnet_ids))
+
+  id = each.value
 }
 
 module "eks" {
@@ -23,7 +30,7 @@ module "eks" {
       from_port   = 0
       to_port     = 0
       type        = "ingress"
-      cidr_blocks = concat(var.private_subnet_cidrs, var.public_subnet_cidrs)
+      cidr_blocks = [for s in data.aws_subnet.subnets : s.cidr_block]
     }
   }
 
