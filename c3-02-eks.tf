@@ -71,10 +71,10 @@ module "eks" {
         }
       }
       windows = {
-        # platform = "windows" # Custom AMI
+        platform = "windows" # Custom AMI
         # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
         # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-        use_custom_launch_template = false # Custom AMI
+        # use_custom_launch_template = true # Custom AMI
         ami_type = var.windows_ami_type #####
         # ami_id = data.aws_ami.win_ami.id
 
@@ -90,21 +90,14 @@ module "eks" {
         # #   #####################
         # #   #### BOOTSTRAPING ###
         # #   #####################
-        # enable_bootstrap_user_data = true
-
-        # bootstrap_extra_args = chomp(
-        #   <<-EOT
-        # -KubeletExtraArgs '--node-labels=apps=true'
-        # EOT
-        # )
-
-        # post_bootstrap_user_data = var.disable_windows_defender ? chomp(
-        #   <<-EOT
-        #   # Add Windows Defender exclusion 
-        #   Set-MpPreference -DisableRealtimeMonitoring $true
-
-        #   EOT
-        # ) : ""
+        pre_bootstrap_user_data = (var.disable_windows_defender ? <<-EOT
+        <powershell>
+        # Add Windows Defender exclusion 
+        Set-MpPreference -DisableRealtimeMonitoring $true
+        
+        </powershell>
+        EOT
+        : "")
 
 
         ebs_optimized = true
