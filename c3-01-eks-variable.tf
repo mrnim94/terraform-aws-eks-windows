@@ -93,11 +93,11 @@ variable "node_host_key_name" {
   type        = string
 }
 
-# variable "disable_windows_defender" {
-#   description = "Flag to disable Windows Defender. Set to true to disable."
-#   type        = bool
-#   default     = false # Set the default as per your requirement
-# }
+variable "disable_windows_defender" {
+  description = "Flag to disable Windows Defender. Set to true to disable."
+  type        = bool
+  default     = false # Set the default as per your requirement
+}
 
 ######################
 ## EXTRA NODE GROUP ##
