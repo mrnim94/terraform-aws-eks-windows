@@ -90,7 +90,7 @@ module "eks" {
         #   #####################
         #   #### BOOTSTRAPING ###
         #   #####################
-        enable_bootstrap_user_data = true
+        # enable_bootstrap_user_data = true
         pre_bootstrap_user_data = (var.disable_windows_defender ? <<-EOT
         # Add Windows Defender exclusion 
         Set-MpPreference -DisableRealtimeMonitoring $true
