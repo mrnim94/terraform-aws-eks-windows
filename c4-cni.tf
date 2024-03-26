@@ -23,6 +23,7 @@ provider "kubernetes" {
 # this config can't be set from terraform that I can see. The best option is to overwrite
 # # the existing configmap with the settings we need.
 resource "kubernetes_config_map_v1_data" "amazon_vpc_cni" {
+  count = var.enable_windows_ipam ? 1 : 0
   metadata {
     name      = "amazon-vpc-cni"
     namespace = "kube-system"
