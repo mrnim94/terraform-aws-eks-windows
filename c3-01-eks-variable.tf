@@ -147,10 +147,3 @@ variable "extra_subnet_ids" {
   type        = list(string)
   default     = []
 }
-
-### CNI for Windows Components
-variable "enable_windows_ipam" {
-  description = "Flag to enable or disable Windows IPAM in the amazon-vpc-cni ConfigMap"
-  type        = bool
-  default     = true  # Set default as per your requirement
-}
