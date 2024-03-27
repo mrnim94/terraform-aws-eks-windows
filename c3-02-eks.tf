@@ -124,6 +124,18 @@ module "eks" {
         max_size       = ng.max_size
         desired_size   = ng.desired_size
         key_name = var.node_host_key_name
+
+        # #   #####################
+        # #   #### BOOTSTRAPING ###
+        # #   #####################
+        pre_bootstrap_user_data = (ng.disable_windows_defender ? <<-EOT
+        <powershell>
+        # Add Windows Defender exclusion 
+        Set-MpPreference -DisableRealtimeMonitoring $true
+        
+        </powershell>
+        EOT
+        : "")
       }
     }
   )
