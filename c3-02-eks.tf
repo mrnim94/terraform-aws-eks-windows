@@ -55,7 +55,7 @@ module "eks" {
         ebs_optimized = true
         block_device_mappings = [
           {
-            device_name = "/dev/sda1"
+            device_name = "/dev/xvda"
             ebs = {
               volume_size           = 100
               volume_type           = "gp3"
@@ -136,6 +136,21 @@ module "eks" {
         </powershell>
         EOT
         : "")
+
+        ebs_optimized = true
+        block_device_mappings = [
+          {
+            device_name = ng.platform == "windows" ? "/dev/sda1" : "/dev/xvda",
+            ebs = {
+              volume_size           = 100
+              volume_type           = "gp3"
+              iops                  = 3000
+              throughput            = 125
+              encrypted             = true
+              delete_on_termination = true
+            }
+          }
+        ]
       }
     }
   )
