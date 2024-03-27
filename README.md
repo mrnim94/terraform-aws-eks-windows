@@ -206,7 +206,8 @@ module "eks-windows" {
 }
 ```
 
-#### explain:
+#### explain:   
+the details of the custom_node_groups variable
 
 | Attribute | Type | Description |
 | --- | --- | --- |
