@@ -53,9 +53,9 @@ module "eks" {
         key_name       = var.node_host_key_name
 
         ebs_optimized = true
-        block_device_mappings = {
-          xvda = {
-            device_name = "/dev/xvda"
+        block_device_mappings = [
+          {
+            device_name = "/dev/sda1"
             ebs = {
               volume_size           = 100
               volume_type           = "gp3"
@@ -65,7 +65,7 @@ module "eks" {
               delete_on_termination = true
             }
           }
-        }
+        ]
       }
       windows = {
         ami_type = var.windows_ami_type
