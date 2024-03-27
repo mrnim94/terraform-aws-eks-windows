@@ -41,9 +41,6 @@ module "eks" {
   eks_managed_node_groups = merge(
     {
       linux = {
-        # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
-        # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-
         tags = {
           "k8s.io/cluster-autoscaler/enabled"                 = "true",
           "k8s.io/cluster-autoscaler/${var.eks_cluster_name}" = "owned"
@@ -71,13 +68,7 @@ module "eks" {
         }
       }
       windows = {
-        # platform = "windows" # Custom AMI
-        # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
-        # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-        # use_custom_launch_template = true # Custom AMI
-        ami_type = var.windows_ami_type #####
-        # ami_id = data.aws_ami.win_ami.id
-
+        ami_type = var.windows_ami_type
         tags = {
           "k8s.io/cluster-autoscaler/enabled"                 = "true",
           "k8s.io/cluster-autoscaler/${var.eks_cluster_name}" = "owned"
@@ -117,43 +108,24 @@ module "eks" {
       }
     },
 
-    var.extra_node_group ? {
-      extra = {
-        count         = var.extra_node_group ? 1 : 0
-        instance_type = [var.extra_instance_type]
-        key_name      = var.node_host_key_name
-        desired_size  = var.extra_desired_size
-        max_size      = var.extra_max_size
-        min_size      = var.extra_min_size
-        subnet_ids    = local.effective_win_subnet_ids
-        taints        = var.extra_node_taints
-        labels        = var.extra_node_labels
-        #   #####################
-        #   #### BOOTSTRAPING ###
-        #   #####################
-        # enable_bootstrap_user_data = true
-        # bootstrap_extra_args = chomp(
-        #   <<-EOT
-        #   --kubelet-extra-args '--node-labels=${var.extra_node_labels} --register-with-taints=${var.extra_node_taints}'
-        #   EOT
-        # )
-
-        ebs_optimized = true
-        block_device_mappings = {
-          xvda = {
-            device_name = "/dev/xvda"
-            ebs = {
-              volume_size           = 100
-              volume_type           = "gp3"
-              iops                  = 3000
-              throughput            = 125
-              encrypted             = true
-              delete_on_termination = true
-            }
-          }
+    { for ng in var.custom_node_groups : ng.name => {
+        tags = {
+          "k8s.io/cluster-autoscaler/enabled"                 = "true",
+          "k8s.io/cluster-autoscaler/${var.eks_cluster_name}" = "owned"
         }
+
+        taints = ng.taints
+        labels = ng.labels
+
+        # Conditional AMI type based on the platform
+        ami_type = ng.platform == "windows" ? var.windows_ami_type : null,
+        instance_types = [ng.instance_type]
+        min_size       = ng.min_size
+        max_size       = ng.max_size
+        desired_size   = ng.desired_size
+        key_name = var.node_host_key_name
       }
-    } : {}
+    }
   )
   cluster_addons = {
     kube-proxy = {

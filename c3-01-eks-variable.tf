@@ -147,3 +147,22 @@ variable "extra_subnet_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "custom_node_groups" {
+  description = "List of custom node group configurations"
+  type        = list(object({
+    name          = string
+    platform      = string
+    instance_type = string
+    desired_size  = number
+    max_size      = number
+    min_size      = number
+    taints = list(object({
+      key    = string
+      value  = string
+      effect = string
+    }))
+    labels = map(string)
+  }))
+  default = []
+}
