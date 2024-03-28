@@ -128,14 +128,16 @@ module "eks" {
         # #   #####################
         # #   #### BOOTSTRAPING ###
         # #   #####################
-        pre_bootstrap_user_data = (ng.disable_windows_defender ? <<-EOT
-        <powershell>
-        # Add Windows Defender exclusion 
-        Set-MpPreference -DisableRealtimeMonitoring $true
-        
-        </powershell>
-        EOT
-        : "")
+        pre_bootstrap_user_data = (
+          ng.disable_windows_defender == "true" && ng.platform == "windows" ? <<-EOT
+            <powershell>
+            # Add Windows Defender exclusion 
+            Set-MpPreference -DisableRealtimeMonitoring $true
+            
+            </powershell>
+            EOT
+            : ""
+        )
 
         ebs_optimized = true
         block_device_mappings = [
