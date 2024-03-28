@@ -129,7 +129,7 @@ module "eks" {
         # #   #### BOOTSTRAPING ###
         # #   #####################
         pre_bootstrap_user_data = (
-          ng.disable_windows_defender == "true" && ng.platform == "windows" ? <<-EOT
+          ng.disable_windows_defender == true && ng.platform == "windows" ? <<-EOT
             <powershell>
             # Add Windows Defender exclusion 
             Set-MpPreference -DisableRealtimeMonitoring $true
