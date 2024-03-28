@@ -158,7 +158,7 @@ output "oidc_provider_arn" {
 
 #### example:
 
-```plaintext
+```hcl
 module "eks-windows" {
     source  = "mrnim94/eks-windows/aws"
     version = "3.x.x"
