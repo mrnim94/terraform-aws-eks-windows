@@ -220,3 +220,9 @@ the details of the custom_node_groups variable
 | `disable_windows_defender` | `bool` | Whether to disable Windows Defender on the nodes in the node group. |
 | `taints` | `list(object({key = string, value = string, effect = string}))` | A list of taints to apply to the nodes in the node group. Each taint is an object with `key`, `value`, and `effect` attributes. |
 | `labels` | `map(string)` | A map of labels to apply to the nodes in the node group. Each label is a key-value pair. |
+
+# The Changes:
+  - [Upgrade to 3.x.x](https://github.com/mrnim94/terraform-aws-eks-windows/blob/master/docs/UPGRADE-3.0.md)
+
+# Issue Reference:
+  - https://github.com/mrnim94/terraform-aws-eks-windows/blob/master/docs/Issue.md
