@@ -22,3 +22,7 @@ We need manually to delete `amazon_vpc_cni` from `tfstate` by the below command:
 ```plaintext
 terraform state rm module.eks-windows.kubernetes_config_map_v1_data.amazon_vpc_cni
 ```
+
+### Operation error EKS: CreateAccessEntry, https response error StatusCode: 409
+
+refer to: https://nimtechnology.com/2024/03/21/eks-operation-error-eks-createaccessentry-https-response-error-statuscode-409/
