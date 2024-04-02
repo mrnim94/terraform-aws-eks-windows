@@ -10,7 +10,7 @@ Terraform Latest Version:
 ![GitHub Release](https://img.shields.io/github/v/release/mrnim94/terraform-aws-eks-windows)
  
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mrnim94_terraform-aws-eks-windows&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mrnim94_terraform-aws-eks-windows)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=mrnim94_terraform-aws-eks-windows)
 
 ## Install EKS windows on vpc that is created by VPC Terrform Module.
 
