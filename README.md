@@ -6,7 +6,7 @@ I want to provide the easy ways for you to install the eks windows
 
 ## Badge
 
-Terraform Latest Version:
+Terraform Latest Version:   
 ![GitHub Release](https://img.shields.io/github/v/release/mrnim94/terraform-aws-eks-windows)
  
 
