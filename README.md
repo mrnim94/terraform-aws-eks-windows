@@ -4,6 +4,14 @@ The eks windows module is based on the eks module v20.x.x
 
 I want to provide the easy ways for you to install the eks windows
 
+## Badge
+
+Terraform Latest Version:
+![GitHub Release](https://img.shields.io/github/v/release/mrnim94/terraform-aws-eks-windows)
+ 
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mrnim94_terraform-aws-eks-windows&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mrnim94_terraform-aws-eks-windows)
+
 ## Install EKS windows on vpc that is created by VPC Terrform Module.
 
 ### variables.tf file
