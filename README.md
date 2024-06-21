@@ -224,7 +224,7 @@ the details of the custom_node_groups variable
 | `platform` | `string` | The platform of the nodes in the node group (e.g., Linux, Windows). |
 | `instance_type` | `string` | The type of instance to use for the nodes in the node group. |
 | `desired_size` | `number` | The desired number of nodes in the node group. |
-| `subnet_ids` | `list(string)` | The individual subnet IDs for the node group.. |
+| `subnet_ids` | `list(string)` | (Optional)The individual subnet IDs for the node group.. |
 | `max_size` | `number` | The maximum number of nodes in the node group. |
 | `min_size` | `number` | The minimum number of nodes in the node group. |
 | `disable_windows_defender` | `bool` | Whether to disable Windows Defender on the nodes in the node group. |
