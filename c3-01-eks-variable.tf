@@ -158,7 +158,7 @@ variable "custom_node_groups" {
     desired_size  = number
     max_size      = number
     min_size      = number
-    disable_windows_defender = bool
+    disable_windows_defender = optional(bool , false)
     taints = list(object({
       key    = string
       value  = string
