@@ -194,7 +194,7 @@ module "eks-windows" {
         name         = "windows-group"
         platform     = "windows"
         instance_type= "t3.large"
-        subnet_ids   = [subnet-04bdeb40bc6cfdc4c, subnet-04bdeb40bc6cfdc4c]
+        subnet_ids   = ["subnet-04bdeb40bc6cfdc4c", "subnet-04bdeb40bc6cfdc4c"]
         min_size     = 1
         max_size     = 3
         desired_size = 2
