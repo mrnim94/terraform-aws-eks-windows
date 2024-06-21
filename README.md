@@ -227,7 +227,7 @@ the details of the custom_node_groups variable
 | `subnet_ids` | `list(string)` | (Optional)The individual subnet IDs for the node group.. |
 | `max_size` | `number` | The maximum number of nodes in the node group. |
 | `min_size` | `number` | The minimum number of nodes in the node group. |
-| `disable_windows_defender` | `bool` | Whether to disable Windows Defender on the nodes in the node group. |
+| `disable_windows_defender` | `bool` | (Optional, Default = `false`) Whether to disable Windows Defender on the nodes in the node group. |
 | `taints` | `list(object({key = string, value = string, effect = string}))` | A list of taints to apply to the nodes in the node group. Each taint is an object with `key`, `value`, and `effect` attributes. |
 | `labels` | `map(string)` | A map of labels to apply to the nodes in the node group. Each label is a key-value pair. |
 
