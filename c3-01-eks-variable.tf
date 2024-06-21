@@ -153,6 +153,7 @@ variable "custom_node_groups" {
   type        = list(object({
     name          = string
     platform      = string
+    subnet_ids    = string
     instance_type = string
     desired_size  = number
     max_size      = number
