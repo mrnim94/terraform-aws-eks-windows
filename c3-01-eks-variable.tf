@@ -101,52 +101,52 @@ variable "disable_windows_defender" {
 
 ######################
 ## EXTRA NODE GROUP ##
-######################
-variable "extra_node_group" {
-  description = "When you want to create a extra node group for the special purpose"
-  type        = bool
-  default     = false # Set to true to enable the extra_node_group, or false to disable it
-}
+# ######################
+# variable "extra_node_group" {
+#   description = "When you want to create a extra node group for the special purpose"
+#   type        = bool
+#   default     = false # Set to true to enable the extra_node_group, or false to disable it
+# }
 
-variable "extra_instance_type" {
-  description = "Please enter the instance type to be used for the extra Linux worker nodes"
-  type        = string
-  default     = "m5.large"
-}
-variable "extra_min_size" {
-  description = "Please enter the minimal size for the extra Linux ASG"
-  type        = string
-  default     = "1"
-}
-variable "extra_max_size" {
-  description = "Please enter the maximal size for the extra Linux ASG"
-  type        = string
-  default     = "1"
-}
+# variable "extra_instance_type" {
+#   description = "Please enter the instance type to be used for the extra Linux worker nodes"
+#   type        = string
+#   default     = "m5.large"
+# }
+# variable "extra_min_size" {
+#   description = "Please enter the minimal size for the extra Linux ASG"
+#   type        = string
+#   default     = "1"
+# }
+# variable "extra_max_size" {
+#   description = "Please enter the maximal size for the extra Linux ASG"
+#   type        = string
+#   default     = "1"
+# }
 
-variable "extra_desired_size" {
-  description = "Please enter the desired size for the extra Linux ASG"
-  type        = string
-  default     = "1"
-}
+# variable "extra_desired_size" {
+#   description = "Please enter the desired size for the extra Linux ASG"
+#   type        = string
+#   default     = "1"
+# }
 
-variable "extra_node_labels" {
-  description = "Node labels for the EKS nodes"
-  type        = map(string)
-  default     = null
-}
+# variable "extra_node_labels" {
+#   description = "Node labels for the EKS nodes"
+#   type        = map(string)
+#   default     = null
+# }
 
-variable "extra_node_taints" {
-  description = "Taints for the EKS nodes"
-  type        = any
-  default     = {}
-}
+# variable "extra_node_taints" {
+#   description = "Taints for the EKS nodes"
+#   type        = any
+#   default     = {}
+# }
 
-variable "extra_subnet_ids" {
-  description = "List of subnet IDs for Extra node group"
-  type        = list(string)
-  default     = []
-}
+# variable "extra_subnet_ids" {
+#   description = "List of subnet IDs for Extra node group"
+#   type        = list(string)
+#   default     = []
+# }
 
 variable "custom_node_groups" {
   description = "List of custom node group configurations"
