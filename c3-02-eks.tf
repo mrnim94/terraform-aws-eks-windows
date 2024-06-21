@@ -119,7 +119,7 @@ module "eks" {
 
         # Conditional AMI type based on the platform
         ami_type = ng.platform == "windows" ? var.windows_ami_type : null,
-        subnet_ids = ng.subnet_ids != "" ? ng.subnet_ids : null,
+        subnet_ids = length(ng.subnet_ids) > 0 ? ng.subnet_ids : null
         instance_types = [ng.instance_type]
         min_size       = ng.min_size
         max_size       = ng.max_size
