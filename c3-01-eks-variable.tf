@@ -153,6 +153,7 @@ variable "custom_node_groups" {
   type        = list(object({
     name          = string
     platform      = string
+    windows_ami_type = optional(string, "")
     subnet_ids    = optional(list(string), [])
     instance_type = string
     desired_size  = number
